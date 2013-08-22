@@ -1,5 +1,5 @@
 ENV['RACK_ENV'] = 'test'
 
-require 'app'
+require 'antichrist_app'
 require 'rspec'
 require 'rack/test'
