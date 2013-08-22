@@ -2,7 +2,9 @@
 # encoding: UTF-8
 
 require 'sinatra'
+require 'json'
 
-get '/hello' do
-  "Hello World!"
+get '/detect' do
+  content_type 'application/json'
+  { :when => Time.now.utc }.to_json
 end

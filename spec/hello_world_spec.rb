@@ -1,14 +1,26 @@
-describe 'The HelloWorld App' do
+require 'antichrist_app'
+
+describe 'Antichrist Detector App' do
   include Rack::Test::Methods
 
   def app
     Sinatra::Application
   end
 
-  it "says hello" do
-    get '/hello'
-    last_response.should be_ok
-    last_response.body.should == 'Hello World!'
+  it 'returns ok for a detection' do
+    get '/detect'
+    expect(last_response).to be_ok
+  end
+
+  it 'returns content type of JSON for a detection' do
+    get '/detect'
+    expect(last_response.content_type).to start_with('application/json')
+  end
+
+  it 'returns time of detection' do
+    get '/detect'
+    response = JSON.parse last_response.body
+    expect(response['when']).to be <= Time.now.utc.to_s
   end
 
 end
