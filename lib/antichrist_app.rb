@@ -6,5 +6,6 @@ require 'json'
 
 get '/detect' do
   content_type 'application/json'
-  { :when => Time.now.utc.iso8601 }.to_json
+  detection = { :when => Time.now.utc.iso8601 }
+  { :detection => detection }.to_json
 end
