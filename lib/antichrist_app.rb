@@ -4,7 +4,7 @@
 require 'sinatra'
 require 'json'
 
-require 'normalizer'
+require 'antichrist_detector'
 
 get '/detect/:name' do |name|
 
