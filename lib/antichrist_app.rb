@@ -4,8 +4,11 @@
 require 'sinatra'
 require 'json'
 
-get '/detect' do
-  content_type 'application/json'
-  detection = { :when => Time.now.utc.iso8601 }
+get '/detect/:name' do |name|
+  content_type :json
+  detection = {
+    :when => Time.now.utc.iso8601,
+    :name => name
+  }
   { :detection => detection }.to_json
 end

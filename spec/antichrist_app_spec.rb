@@ -1,4 +1,5 @@
 require 'antichrist_app'
+require 'uri'
 
 describe 'Antichrist Detector App' do
   include Rack::Test::Methods
@@ -10,7 +11,7 @@ describe 'Antichrist Detector App' do
   context 'when detecting' do
 
     before :each do
-      get '/detect'
+      get URI.escape('/detect/Bob Villa')
     end
 
     let :content_type do
@@ -36,6 +37,10 @@ describe 'Antichrist Detector App' do
 
     it 'returns time of detection' do
       expect(detection[:when]).to be <= Time.now.utc.iso8601
+    end
+
+    it 'returns the name of the detection' do
+      expect(detection[:name]).to eq "Bob Villa"
     end
 
   end
