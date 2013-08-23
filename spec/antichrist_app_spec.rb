@@ -1,4 +1,3 @@
-require 'antichrist_app'
 require 'uri'
 
 describe 'Antichrist Detector App' do
@@ -40,7 +39,11 @@ describe 'Antichrist Detector App' do
     end
 
     it 'returns the name of the detection' do
-      expect(detection[:name]).to eq "Bob Villa"
+      expect(detection[:name]).to eq 'Bob Villa'
+    end
+
+    it 'returns the normalized name' do
+      expect(detection[:normalized_name]).to eq 'BOBVILLA'
     end
 
   end
