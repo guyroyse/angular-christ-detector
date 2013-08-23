@@ -20,7 +20,7 @@ describe 'Antichrist Detector App' do
   it 'returns time of detection' do
     get '/detect'
     response = JSON.parse last_response.body
-    expect(response['when']).to be <= Time.now.utc.to_s
+    expect(response['when']).to be <= Time.now.utc.iso8601
   end
 
 end
