@@ -10,12 +10,9 @@ get '/detect/:name' do |name|
 
   content_type :json
 
-  detection = {
-    :when => Time.now.utc.iso8601,
-    :name => name,
-    :normalized_name => AntichristName.new(name).normalized_name
-  }
+  detector = AntichristDetector.new
+  detection = detector.detect name
 
-  { :detection => detection }.to_json
+  detection.to_json
 
 end
