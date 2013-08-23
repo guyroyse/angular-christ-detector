@@ -1,3 +1,5 @@
+# encoding: UTF-8
+
 require 'uri'
 
 describe 'Antichrist Detector App' do

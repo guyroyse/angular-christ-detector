@@ -1,6 +1,8 @@
+# encoding: UTF-8
+
 class AntichristName
 
-  attr_writer :raw_name
+  attr_accessor :raw_name
 
   def initialize raw_name = nil
     @raw_name = raw_name
