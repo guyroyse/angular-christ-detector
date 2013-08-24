@@ -1,1 +1,1 @@
---format documentation --color --require spec_helper.rb
+--format documentation --color --pattern **/*_spec.rb --default-path spec/ruby --require spec_helper.rb -I spec/ruby -I src/ruby
