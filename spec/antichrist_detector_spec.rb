@@ -1,6 +1,6 @@
 # encoding: UTF-8
 
-describe AntichristName do
+describe Antichrist::Name do
 
   it 'uppercases the name' do
     subject.raw_name = 'Bob'
@@ -19,6 +19,11 @@ describe AntichristName do
 
   it 'strips out extended characters from the name' do
     subject.raw_name = 'ñé'
+    expect(subject.normalized_name).to eq ''
+  end
+
+  it 'strips out symbols and punctuation' do
+    subject.raw_name = '?<>!@#$%^&*()_+-=`~;<>/"'
     expect(subject.normalized_name).to eq ''
   end
 

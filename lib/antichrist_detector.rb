@@ -1,29 +1,33 @@
 # encoding: UTF-8
 
-class AntichristName
+module Antichrist
 
-  attr_accessor :raw_name
+  class Name
 
-  def initialize raw_name = nil
-    @raw_name = raw_name
+    attr_accessor :raw_name
+
+    def initialize raw_name = nil
+      @raw_name = raw_name
+    end
+
+    def normalized_name
+      @raw_name.upcase.gsub /[^A-Za-z0-9]/, ''
+    end
+
   end
 
-  def normalized_name
-    @raw_name.upcase.gsub /\s/, ''
-  end
+  module Detector
 
-end
+    def self.detect name
 
-class AntichristDetector
+      ac_name = Antichrist::Name.new name
 
-  def detect name
+      { :detection =>
+        { :when => Time.now.utc.iso8601,
+          :name => ac_name.raw_name,
+          :normalized_name => ac_name.normalized_name } }
 
-    ac_name = AntichristName.new name
-
-    { :detection =>
-      { :when => Time.now.utc.iso8601,
-        :name => ac_name.raw_name,
-        :normalized_name => ac_name.normalized_name } }
+    end
 
   end
 
