@@ -8,25 +8,22 @@ module Antichrist
     end
   end
 
-  class Calculator
-
-    def initialize normalized_name
-      @normalized_name = normalized_name
+  module Calculator
+    def calculate normalized_name
+      normalized_name.each_byte.reduce do |total, byte|
+        total + byte
+      end
     end
-
-    def calculate
-      587
-    end
-
   end
 
   class Detector
     include Antichrist::Name
+    include Antichrist::Calculator
 
     def detect name
 
       normalized_name = normalize name
-      human_number = Antichrist::Calculator.new(normalized_name).calculate
+      human_number = calculate normalized_name
 
       { :detection =>
         { :when => Time.now.utc.iso8601,

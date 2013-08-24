@@ -1,6 +1,6 @@
 # encoding: UTF-8
 
-describe Antichrist::Name do
+describe 'Antichrist::Name::normalize' do
   include Antichrist::Name
 
   it 'uppercases the name' do
@@ -21,6 +21,23 @@ describe Antichrist::Name do
 
   it 'strips out symbols and punctuation' do
     expect(normalize('?<>!@#$%^&*()_+-=`~;<>/"')).to eq ''
+  end
+
+end
+
+describe 'Antichrist::Calculator::calculato' do
+  include Antichrist::Calculator
+
+  it 'returns the ASCII value of a passed in character' do
+    expect(calculate('A')).to eq 65
+  end
+
+  it 'returns the ASCII value of a passed in number' do
+    expect(calculate('1')).to eq 49
+  end
+
+  it 'returns the total ASCII values of a passed in string' do
+    expect(calculate('BOBVILLA')).to eq 587
   end
 
 end
