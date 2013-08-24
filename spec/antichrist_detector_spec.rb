@@ -12,18 +12,15 @@ describe Antichrist::Name do
   end
 
   it 'leaves numbers in the name' do
-    subject.raw_name = '12345'
-    expect(subject.normalized_name).to eq '12345'
+    expect(normalize('12345')).to eq '12345'
   end
 
   it 'strips out extended characters from the name' do
-    subject.raw_name = 'ñé'
-    expect(subject.normalized_name).to eq ''
+    expect(normalize('ñé')).to eq ''
   end
 
   it 'strips out symbols and punctuation' do
-    subject.raw_name = '?<>!@#$%^&*()_+-=`~;<>/"'
-    expect(subject.normalized_name).to eq ''
+    expect(normalize('?<>!@#$%^&*()_+-=`~;<>/"')).to eq ''
   end
 
 end
