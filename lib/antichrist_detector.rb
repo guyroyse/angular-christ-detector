@@ -17,8 +17,8 @@ module Antichrist
   end
 
   module Designator
-    def designate number
-      :human
+    def designate human_number
+      human_number == 666 ? :antichrist : :human
     end
   end
 
