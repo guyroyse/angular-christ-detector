@@ -31,18 +31,28 @@ module Antichrist
     include Antichrist::Designator
 
     def detect name
+      detection = Antichrist::Detection.new
+      detection.when = Time.now.utc.iso8601
+      detection.name = name
+      detection.normalized_name = normalize name
+      detection.human_number = calculate detection.normalized_name
+      detection.designation = designate detection.human_number
+      detection
+    end
 
-      normalized_name = normalize name
-      human_number = calculate normalized_name
-      designation = designate human_number
+  end
 
+  class Detection
+
+    attr_accessor :when, :name, :normalized_name, :human_number, :designation
+
+    def to_json
       { :detection =>
-        { :when => Time.now.utc.iso8601,
-          :name => name,
-          :normalized_name => normalized_name,
-          :human_number => human_number,
-          :designation => designation } }
-
+        { :when => @when,
+          :name => @name,
+          :normalized_name => @normalized_name,
+          :human_number => @human_number,
+          :designation => @designation } }.to_json
     end
 
   end
