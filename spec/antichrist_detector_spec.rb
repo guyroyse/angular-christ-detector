@@ -47,7 +47,11 @@ describe 'Antichrist' do
   describe 'Designator::designate' do
     include Antichrist::Designator
 
-    it 'returns :human for not 666 and 777' do
+    it 'returns :antichrist for human number of 666' do
+      expect(designate(666)).to eq :antichrist
+    end
+
+    it 'returns :human for eveyone else' do
       expect(designate(123)).to eq :human
     end
 
