@@ -25,18 +25,20 @@ module Antichrist
   class Detector
     include Antichrist::Name
     include Antichrist::Calculator
+    include Antichrist::Designator
 
     def detect name
 
       normalized_name = normalize name
       human_number = calculate normalized_name
+      designation = designate human_number
 
       { :detection =>
         { :when => Time.now.utc.iso8601,
           :name => name,
           :normalized_name => normalized_name,
           :human_number => human_number,
-          :designation => :human } }
+          :designation => designation } }
 
     end
 
