@@ -16,6 +16,12 @@ module Antichrist
     end
   end
 
+  module Designator
+    def designate number
+      :human
+    end
+  end
+
   class Detector
     include Antichrist::Name
     include Antichrist::Calculator
@@ -29,7 +35,8 @@ module Antichrist
         { :when => Time.now.utc.iso8601,
           :name => name,
           :normalized_name => normalized_name,
-          :human_number => human_number } }
+          :human_number => human_number,
+          :designation => :human } }
 
     end
 

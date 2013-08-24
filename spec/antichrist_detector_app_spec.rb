@@ -2,7 +2,7 @@
 
 require 'uri'
 
-describe 'Antichrist Detector App' do
+describe 'App' do
   include Rack::Test::Methods
 
   def app
@@ -50,6 +50,10 @@ describe 'Antichrist Detector App' do
 
     it 'returns the human number' do
       expect(detection[:human_number]).to eq 587
+    end
+
+    it 'returns the designation' do
+      expect(detection[:designation]).to eq 'human'
     end
 
   end

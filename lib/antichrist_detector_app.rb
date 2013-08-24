@@ -7,11 +7,7 @@ require 'json'
 require 'antichrist_detector'
 
 get '/detect/:name' do |name|
-
   content_type :json
-
   detection = Antichrist::Detector.new.detect name
-
   detection.to_json
-
 end
