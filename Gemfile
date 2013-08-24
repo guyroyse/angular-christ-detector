@@ -8,5 +8,4 @@ group :test do
   gem 'rspec', '~> 2.14'
   gem 'rack-test', '~> 0.6'
   gem 'autotest-standalone', '~> 4.5'
-  gem 'jasmine-headless-webkit'
 end
