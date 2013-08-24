@@ -18,9 +18,10 @@ module Antichrist
 
   module Designator
     def designate human_number
-      return :antichrist if human_number == 666
-      return :christ if human_number == 777
-      return :human
+      designation = :human
+      designation = :antichrist if human_number == 666
+      designation = :christ if human_number == 777
+      designation
     end
   end
 
