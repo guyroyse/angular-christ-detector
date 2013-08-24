@@ -51,6 +51,10 @@ describe 'Antichrist' do
       expect(designate(666)).to eq :antichrist
     end
 
+    it 'returns :christ for human number of 777' do
+      expect(designate(777)).to eq :christ
+    end
+
     it 'returns :human for eveyone else' do
       expect(designate(123)).to eq :human
     end
