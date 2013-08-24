@@ -2,24 +2,10 @@
 
 module Antichrist
 
-  module NameNormalizer
+  module Name
     def normalize name
-      Antichrist::Name.new(name).normalized_name
+      name.upcase.gsub /[^A-Za-z0-9]/, ''
     end
-  end
-
-  class Name
-
-    attr_accessor :raw_name
-
-    def initialize raw_name = nil
-      @raw_name = raw_name
-    end
-
-    def normalized_name
-      @raw_name.upcase.gsub /[^A-Za-z0-9]/, ''
-    end
-
   end
 
   class Calculator
@@ -34,11 +20,12 @@ module Antichrist
 
   end
 
-  module Detector
+  class Detector
+    include Antichrist::Name
 
-    def self.detect name
+    def detect name
 
-      normalized_name = Antichrist::Name.new(name).normalized_name
+      normalized_name = normalize name
       human_number = Antichrist::Calculator.new(normalized_name).calculate
 
       { :detection =>

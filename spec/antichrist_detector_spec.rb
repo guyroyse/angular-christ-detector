@@ -1,7 +1,7 @@
 # encoding: UTF-8
 
 describe Antichrist::Name do
-  include Antichrist::NameNormalizer
+  include Antichrist::Name
 
   it 'uppercases the name' do
     expect(normalize('Bob')).to eq 'BOB'

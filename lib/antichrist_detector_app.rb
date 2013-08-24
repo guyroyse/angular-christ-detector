@@ -10,7 +10,7 @@ get '/detect/:name' do |name|
 
   content_type :json
 
-  detection = Antichrist::Detector::detect name
+  detection = Antichrist::Detector.new.detect name
 
   detection.to_json
 
