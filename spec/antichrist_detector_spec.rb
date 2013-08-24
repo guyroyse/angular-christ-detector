@@ -1,15 +1,14 @@
 # encoding: UTF-8
 
 describe Antichrist::Name do
+  include Antichrist::NameNormalizer
 
   it 'uppercases the name' do
-    subject.raw_name = 'Bob'
-    expect(subject.normalized_name).to eq 'BOB'
+    expect(normalize('Bob')).to eq 'BOB'
   end
 
   it 'strips whitespace from the name' do
-    subject.raw_name = "\t\r\n "
-    expect(subject.normalized_name).to eq ''
+    expect(normalize("\t\r\n ")).to eq ''
   end
 
   it 'leaves numbers in the name' do

@@ -2,6 +2,12 @@
 
 module Antichrist
 
+  module NameNormalizer
+    def normalize name
+      Antichrist::Name.new(name).normalized_name
+    end
+  end
+
   class Name
 
     attr_accessor :raw_name
