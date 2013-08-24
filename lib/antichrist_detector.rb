@@ -16,16 +16,30 @@ module Antichrist
 
   end
 
+  class Calculator
+
+    def initialize normalized_name
+      @normalized_name = normalized_name
+    end
+
+    def calculate
+      587
+    end
+
+  end
+
   module Detector
 
     def self.detect name
 
-      ac_name = Antichrist::Name.new name
+      normalized_name = Antichrist::Name.new(name).normalized_name
+      human_number = Antichrist::Calculator.new(normalized_name).calculate
 
       { :detection =>
         { :when => Time.now.utc.iso8601,
-          :name => ac_name.raw_name,
-          :normalized_name => ac_name.normalized_name } }
+          :name => name,
+          :normalized_name => normalized_name,
+          :human_number => human_number } }
 
     end
 

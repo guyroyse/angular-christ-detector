@@ -48,6 +48,10 @@ describe 'Antichrist Detector App' do
       expect(detection[:normalized_name]).to eq 'BOBVILLA'
     end
 
+    it 'returns the human number' do
+      expect(detection[:human_number]).to eq 587
+    end
+
   end
 
 end
