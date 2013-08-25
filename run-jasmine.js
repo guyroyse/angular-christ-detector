@@ -2,68 +2,37 @@
 
   var system = require('system');
 
-  /**
-   * Wait until the test condition is true or a timeout occurs. Useful for waiting
-   * on a server response or for a ui change (fadeIn, etc.) to occur.
-   *
-   * @param testFx javascript condition that evaluates to a boolean,
-   * it can be passed in as a string (e.g.: "1 == 1" or "$('#bar').is(':visible')" or
-   * as a callback function.
-   * @param onReady what to do when testFx condition is fulfilled,
-   * it can be passed in as a string (e.g.: "1 == 1" or "$('#bar').is(':visible')" or
-   * as a callback function.
-   * @param timeOutMillis the max amount of time to wait. If not specified, 3 sec is used.
-   */
-
-  var waitFor = function(testCallback, readyCallback, timeOutMillis) {
-
-    var maxtimeOutMillis = timeOutMillis ? timeOutMillis : 3001;
-
-    var intervalId;
-
-    var start = new Date().getTime();
-    var conditionMet = false;
-
-    var notTimedOut = function() {
-      var now = new Date().getTime();
-      var expiredTime = now - start;
-      return expiredTime < maxtimeOutMillis
-    };
-
-    var conditionNotMet = function() {
-      return !conditionMet;
-    };
-
-    var intervalFx = function() {
-
-      if (notTimedOut() && conditionNotMet()) {
-        conditionMet = testCallback();
-      } else {
-        if(conditionNotMet()) {
-            // If condition still not fulfilled (timeout but condition is 'false')
-            phantom.exit(1);
-        } else {
-            // Condition fulfilled (timeout and/or condition is 'true')
-            readyCallback();
-            clearInterval(intervalId);
-        }
-      }
-
-    };
-
-    intervalId = setInterval(intervalFx, 100);
-
-  };
-
-
   if (system.args.length !== 2) {
       console.log('Usage: run-jasmine.js URL');
       phantom.exit(1);
   }
 
+  var waitFor = function(conditionCallback, readyCallback, timeoutMillis) {
+
+    var start = new Date().getTime();
+
+    var timedOut = function() {
+      var now = new Date().getTime();
+      var expiredTime = now - start;
+      return expiredTime > timeoutMillis || 3001;
+    };
+
+    var intervalId = setInterval(function() {
+
+      if (conditionCallback()) {
+        readyCallback();
+        clearInterval(intervalId);
+        return;
+      }
+
+      if (timedOut()) phantom.exit(1);
+
+    }, 100);
+
+  };
+
   var page = require('webpage').create();
 
-  // Route "console.log()" calls from within the Page context to the main Phantom context (i.e. current "this")
   page.onConsoleMessage = function(msg) {
       console.log(msg);
   };
