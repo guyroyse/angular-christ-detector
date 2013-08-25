@@ -1,6 +1,12 @@
 require 'rspec/core'
 require 'rspec/core/rake_task'
 
-RSpec::Core::RakeTask.new :spec
-
 task :default => :spec
+
+task :spec => [:rspec, :jasmine]
+
+RSpec::Core::RakeTask.new :rspec
+
+task :jasmine do
+  exec 'phantomjs run-jasmine.js SpecRunner.html'
+end
