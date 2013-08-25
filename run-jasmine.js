@@ -61,13 +61,93 @@
           return elementInnerText('span.duration');
         };
 
+        var alertBar = function() {
+          return elementInnerText('.alert>.bar');
+        };
+
+        var summaryElement = function() {
+          return document.body.querySelector('.summary');
+        };
+
+        var elementIsSuite = function(element) {
+          return element.classList.contains('suite');
+        };
+
+        var elementIsDescription = function(element) {
+          return element.classList.contains('description');
+        };
+
+        var elementIsSpecSummary = function(element) {
+          return element.classList.contains('specSummary');
+        };
+
+        var buildIndent = function(indent) {
+          return Array((indent || 0) + 1).join('  ');
+        };
+
+        var printLine = function(line, indent) {
+          var indentString = buildIndent(indent);
+          console.log(indentString + (line || ''));
+        };
+
+        var printPassingLine = function(line, indent) {
+          var green = '\033[32m';
+          var normal = '\033[0m';
+          printLine(green + line + normal, indent);
+        };
+
         var printHeader = function() {
-          console.log('');
-          console.log(title().concat(' ').concat(version()));
-          console.log('');
+          printLine();
+          printLine(title() + version());
+        };
+
+        var displayTestResults = function(element) {
+
+          var indentLevel = 0;
+
+          var printDescription = function(element) {
+            if (indentLevel === 0) printLine();
+            printLine(element.innerText.trim(), indentLevel);
+            indentLevel++;
+          };
+
+          var printSpecSummary = function(element) {              
+            printPassingLine(element.innerText.trim(), indentLevel);
+          };
+
+          var recurseTestResults = function(element) {
+
+            Array.prototype.slice.apply(element.children).forEach(function(child) {
+              if (elementIsSuite(child)) recurseTestResults(child);
+              if (elementIsDescription(child)) printDescription(child);
+              if (elementIsSpecSummary(child)) printSpecSummary(child);
+            });
+
+            indentLevel--;
+
+          };
+
+          recurseTestResults(summaryElement());
+
+        };
+
+        var printDuration = function() {
+          printLine();
+          printLine(duration());
+        };
+
+        var printSummary = function() {
+          printPassingLine(alertBar());
+          printLine();
         };
 
         printHeader();
+        displayTestResults();
+        printDuration();
+        printSummary();
+
+/*
+        console.log('-------------');
 
         var list = document.body.querySelectorAll('.results > #details > .specDetail.failed');
         if (list && list.length > 0) {
@@ -87,6 +167,7 @@
           console.log(document.body.querySelector('.alert > .passingAlert.bar').innerText);
           return 0;
         }
+*/
 
     });
 

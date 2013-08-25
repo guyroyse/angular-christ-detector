@@ -3,18 +3,18 @@ describe("Sample", function() {
     expect(true).toBeTruthy();
   });
   it("runs", function() {
-    expect(false).toBeTruthy();
+    expect(true).toBeTruthy();
   });
 });
 
 
 describe("Sample", function() {
   it("runs", function() {
-    expect(false).toBeTruthy();
+    expect(true).toBeTruthy();
   });
   describe("Sample", function() {
     it("runs", function() {
-      expect(false).toBeTruthy();
+      expect(true).toBeTruthy();
     });
   });
 });
