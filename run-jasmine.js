@@ -45,6 +45,14 @@
 
     var exitCode = page.evaluate(function(){
 
+        var alertBarElement = function() {
+          return document.body.querySelector('.alert>.bar');
+        };
+
+        var summaryElement = function() {
+          return document.body.querySelector('.summary');
+        };
+
         var elementInnerText = function(selector) {
           return document.body.querySelector(selector).innerText.trim();
         };
@@ -65,10 +73,6 @@
           return elementInnerText('.alert>.bar');
         };
 
-        var summaryElement = function() {
-          return document.body.querySelector('.summary');
-        };
-
         var elementIsSuite = function(element) {
           return element.classList.contains('suite');
         };
@@ -81,6 +85,14 @@
           return element.classList.contains('specSummary');
         };
 
+        var elementIsPassing = function(element) {
+          return element.classList.contains('passed');
+        };
+
+        var thereAreFailedTests = function() {
+          return alertBarElement().classList.contains('failingAlert');
+        };
+
         var buildIndent = function(indent) {
           return Array((indent || 0) + 1).join('  ');
         };
@@ -90,9 +102,15 @@
           console.log(indentString + (line || ''));
         };
 
+        var red = '\033[31m';
+        var green = '\033[32m';
+        var normal = '\033[0m';
+
+        var printFailingLine = function(line, indent) {
+          printLine(red + line + normal, indent);
+        };
+
         var printPassingLine = function(line, indent) {
-          var green = '\033[32m';
-          var normal = '\033[0m';
           printLine(green + line + normal, indent);
         };
 
@@ -111,8 +129,10 @@
             indentLevel++;
           };
 
-          var printSpecSummary = function(element) {              
-            printPassingLine(element.innerText.trim(), indentLevel);
+          var printSpecSummary = function(element) {
+            var specSummary = element.innerText.trim();
+            if (elementIsPassing(element)) printPassingLine(specSummary, indentLevel);
+            printFailingLine(specSummary, indentLevel);
           };
 
           var recurseTestResults = function(element) {
@@ -137,7 +157,10 @@
         };
 
         var printSummary = function() {
-          printPassingLine(alertBar());
+          if (thereAreFailedTests())
+            printFailingLine(alertBar());
+          else 
+            printPassingLine(alertBar());
           printLine();
         };
 

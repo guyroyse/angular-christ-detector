@@ -3,7 +3,7 @@ describe("Sample", function() {
     expect(true).toBeTruthy();
   });
   it("runs", function() {
-    expect(true).toBeTruthy();
+    expect(false).toBeTruthy();
   });
 });
 
@@ -14,7 +14,7 @@ describe("Sample", function() {
   });
   describe("Sample", function() {
     it("runs", function() {
-      expect(true).toBeTruthy();
+      expect(false).toBeTruthy();
     });
   });
 });
