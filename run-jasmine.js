@@ -23,11 +23,11 @@ function waitFor(testFx, onReady, timeOutMillis) {
             } else {
                 if(!condition) {
                     // If condition still not fulfilled (timeout but condition is 'false')
-                    console.log("'waitFor()' timeout");
+//                  console.log("'waitFor()' timeout");
                     phantom.exit(1);
                 } else {
                     // Condition fulfilled (timeout and/or condition is 'true')
-                    console.log("'waitFor()' finished in " + (new Date().getTime() - start) + "ms.");
+//                  console.log("'waitFor()' finished in " + (new Date().getTime() - start) + "ms.");
                     typeof(onReady) === "string" ? eval(onReady) : onReady(); //< Do what it's supposed to do once the condition is fulfilled
                     clearInterval(interval); //< Stop this interval
                 }
@@ -59,8 +59,31 @@ page.open(system.args[1], function(status){
             });
         }, function(){
             var exitCode = page.evaluate(function(){
-                console.log('');
-                console.log(document.body.querySelector('.description').innerText);
+
+                var elementInnerText = function(selector) {
+                  return document.body.querySelector(selector).innerText.trim();
+                };
+
+                var title = function() {
+                  return elementInnerText('span.title');
+                };
+
+                var version = function() {
+                  return elementInnerText('span.version');
+                };
+
+                var duration = function() {
+                  return elementInnerText('span.duration');
+                };
+
+                var printHeader = function() {
+                  console.log('');
+                  console.log(title().concat(' ').concat(version()));
+                  console.log('');
+                };
+
+                printHeader();
+
                 var list = document.body.querySelectorAll('.results > #details > .specDetail.failed');
                 if (list && list.length > 0) {
                   console.log('');
@@ -79,6 +102,9 @@ page.open(system.args[1], function(status){
                   console.log(document.body.querySelector('.alert > .passingAlert.bar').innerText);
                   return 0;
                 }
+
+
+
             });
             phantom.exit(exitCode);
         });
