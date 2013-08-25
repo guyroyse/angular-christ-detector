@@ -2,10 +2,6 @@
 
 describe 'Antichrist' do
 
-  it 'fails' do
-    expect(false).to eq true
-  end
-
   describe 'Name::normalize' do
     include Antichrist::Name
 
