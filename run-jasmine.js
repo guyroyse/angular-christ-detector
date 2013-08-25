@@ -7,6 +7,8 @@
       phantom.exit(1);
   }
 
+  var pageUrl = system.args[1];
+
   var waitFor = function(conditionCallback, readyCallback, timeoutMillis) {
 
     var start = new Date().getTime();
@@ -14,7 +16,7 @@
     var timedOut = function() {
       var now = new Date().getTime();
       var expiredTime = now - start;
-      return expiredTime > timeoutMillis || 3001;
+      return expiredTime > timeoutMillis;
     };
 
     var intervalId = setInterval(function() {
@@ -33,71 +35,78 @@
 
   var page = require('webpage').create();
 
-  page.onConsoleMessage = function(msg) {
-      console.log(msg);
+  var areTestsCompleted = function() {
+    return page.evaluate(function() {
+      return document.body.querySelector('.symbolSummary .pending') === null;
+    });
   };
 
-  page.open(system.args[1], function(status){
-      if (status !== "success") {
-          console.log("Unable to access network");
-          phantom.exit();
-      } else {
-          waitFor(function(){
-              return page.evaluate(function(){
-                  return document.body.querySelector('.symbolSummary .pending') === null
-              });
-          }, function(){
-              var exitCode = page.evaluate(function(){
+  var generateTestReport = function() {
 
-                  var elementInnerText = function(selector) {
-                    return document.body.querySelector(selector).innerText.trim();
-                  };
+    var exitCode = page.evaluate(function(){
 
-                  var title = function() {
-                    return elementInnerText('span.title');
-                  };
+        var elementInnerText = function(selector) {
+          return document.body.querySelector(selector).innerText.trim();
+        };
 
-                  var version = function() {
-                    return elementInnerText('span.version');
-                  };
+        var title = function() {
+          return elementInnerText('span.title');
+        };
 
-                  var duration = function() {
-                    return elementInnerText('span.duration');
-                  };
+        var version = function() {
+          return elementInnerText('span.version');
+        };
 
-                  var printHeader = function() {
-                    console.log('');
-                    console.log(title().concat(' ').concat(version()));
-                    console.log('');
-                  };
+        var duration = function() {
+          return elementInnerText('span.duration');
+        };
 
-                  printHeader();
+        var printHeader = function() {
+          console.log('');
+          console.log(title().concat(' ').concat(version()));
+          console.log('');
+        };
 
-                  var list = document.body.querySelectorAll('.results > #details > .specDetail.failed');
-                  if (list && list.length > 0) {
-                    console.log('');
-                    console.log(list.length + ' test(s) FAILED:');
-                    for (i = 0; i < list.length; ++i) {
-                        var el = list[i],
-                            desc = el.querySelector('.description'),
-                            msg = el.querySelector('.resultMessage.fail');
-                        console.log('');
-                        console.log(desc.innerText);
-                        console.log(msg.innerText);
-                        console.log('');
-                    }
-                    return 1;
-                  } else {
-                    console.log(document.body.querySelector('.alert > .passingAlert.bar').innerText);
-                    return 0;
-                  }
+        printHeader();
 
+        var list = document.body.querySelectorAll('.results > #details > .specDetail.failed');
+        if (list && list.length > 0) {
+          console.log('');
+          console.log(list.length + ' test(s) FAILED:');
+          for (i = 0; i < list.length; ++i) {
+              var el = list[i],
+                  desc = el.querySelector('.description'),
+                  msg = el.querySelector('.resultMessage.fail');
+              console.log('');
+              console.log(desc.innerText);
+              console.log(msg.innerText);
+              console.log('');
+          }
+          return 1;
+        } else {
+          console.log(document.body.querySelector('.alert > .passingAlert.bar').innerText);
+          return 0;
+        }
 
+    });
 
-              });
-              phantom.exit(exitCode);
-          });
-      }
+    phantom.exit(exitCode);
+
+  };
+
+  page.onConsoleMessage = function(msg) {
+    console.log(msg);
+  };
+
+  page.open(pageUrl, function(status){
+
+    if (status !== "success") {
+      console.log("Unable to load page");
+      phantom.exit();
+    }
+
+    waitFor(areTestsCompleted(), generateTestReport(), 5000);
+
   });
 
 
