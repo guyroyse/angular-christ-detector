@@ -116,7 +116,7 @@
 
         var printHeader = function() {
           printLine();
-          printLine(title() + version());
+          printLine(title() + ' ' + version());
         };
 
         var displayTestResults = function(element) {
@@ -131,8 +131,10 @@
 
           var printSpecSummary = function(element) {
             var specSummary = element.innerText.trim();
-            if (elementIsPassing(element)) printPassingLine(specSummary, indentLevel);
-            printFailingLine(specSummary, indentLevel);
+            if (elementIsPassing(element))
+              printPassingLine(specSummary, indentLevel);
+            else
+              printFailingLine(specSummary, indentLevel);
           };
 
           var recurseTestResults = function(element) {
@@ -151,12 +153,27 @@
 
         };
 
-        var printDuration = function() {
+        var displayFailureResults = function() {
+
+          if (!thereAreFailedTests()) return;
+
           printLine();
-          printLine(duration());
+          printLine('Failures:');
+          printLine();
+
+          var failedTests = document.body.querySelectorAll('.specDetail.failed');
+
+          Array.prototype.slice.apply(failedTests).forEach(function(test) {
+            printLine(test.children[0].innerText.trim(), 1);
+            printFailingLine(test.children[1].children[0].innerText.trim(), 2);
+            printLine();
+          });
+  
         };
 
         var printSummary = function() {
+          printLine();
+          printLine(duration());
           if (thereAreFailedTests())
             printFailingLine(alertBar());
           else 
@@ -166,31 +183,8 @@
 
         printHeader();
         displayTestResults();
-        printDuration();
+        displayFailureResults();
         printSummary();
-
-/*
-        console.log('-------------');
-
-        var list = document.body.querySelectorAll('.results > #details > .specDetail.failed');
-        if (list && list.length > 0) {
-          console.log('');
-          console.log(list.length + ' test(s) FAILED:');
-          for (i = 0; i < list.length; ++i) {
-              var el = list[i],
-                  desc = el.querySelector('.description'),
-                  msg = el.querySelector('.resultMessage.fail');
-              console.log('');
-              console.log(desc.innerText);
-              console.log(msg.innerText);
-              console.log('');
-          }
-          return 1;
-        } else {
-          console.log(document.body.querySelector('.alert > .passingAlert.bar').innerText);
-          return 0;
-        }
-*/
 
     });
 
