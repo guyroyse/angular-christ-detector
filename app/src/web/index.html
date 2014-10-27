@@ -14,10 +14,17 @@
   </header>
 
   <section>
-    <p>Name: {{detection.name}}</p>
-    <p>Normalized Name: {{detection.normalized_name}}</p>
-    <p>Human Number: {{detection.human_number}}</p>
-    <p>Designation: {{detection.designation}}</p>
+
+    <input type="text" ng-model="enteredName" />
+    <button ng-click="detect()">Detect</button>
+
+    <div ng-show="detection">
+      <p>Name: {{detection.name}}</p>
+      <p>Normalized Name: {{detection.normalized_name}}</p>
+      <p>Human Number: {{detection.human_number}}</p>
+      <p>Designation: {{detection.designation}}</p>
+    </div>
+
   </section>
 
   <footer>
