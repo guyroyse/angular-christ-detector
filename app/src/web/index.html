@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en" ng-app="antichristDetectorApp">
+<head>
+  <meta charset="utf-8">
+  <title>The Antichrist Detector</title>
+  <link rel="stylesheet" href="detector.css">
+  <script src="angular.min.js"></script>
+  <script src="detector.js"></script>
+</head>
+<body ng-controller="DetectorController">
+
+  <header>
+    <img src="antichrist.gif" alt="The Antichrist Detector"/>
+  </header>
+
+  <section>
+    <p>Name: {{detection.name}}</p>
+    <p>Normalized Name: {{detection.normalized_name}}</p>
+    <p>Human Number: {{detection.human_number}}</p>
+    <p>Designation: {{detection.designation}}</p>
+  </section>
+
+  <footer>
+    Copyright &copy; 2000-20014 Guy A. Royse. Some rights reserved.
+  </footer>
+
+</body>
+</html>
